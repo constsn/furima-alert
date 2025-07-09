@@ -4,6 +4,7 @@ import Credentials from 'next-auth/providers/credentials';
 import { z } from 'zod';
 import { prisma } from './lib/db/prisma';
 import bcryptjs from 'bcryptjs';
+import { authConfig } from './auth.config';
 
 const getUser = async (email: string) => {
   return await prisma.user.findUnique({
@@ -41,11 +42,18 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
     }),
   ],
   callbacks: {
+    ...authConfig.callbacks,
     async session({ session, token }) {
       if (session.user) {
         session.user.id = (token.id || token.sub || '') as string;
       }
       return session;
+    },
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
     },
   },
 });
