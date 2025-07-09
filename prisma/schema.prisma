@@ -1,0 +1,68 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                           String          @id @default(cuid())
+  name                         String
+  email                        String          @unique
+  password                     String
+  pushSubscriptions            PushSubscription[]
+  conditions                   Condition[] 
+  notifiedItems                NotifiedItem[]
+  createdAt                    DateTime        @default(now())
+}
+
+model Condition {
+  id                           String          @id @default(cuid())
+  keyword                      String
+  categoryId                   String?
+  subcategoryId                String?
+  childCategoryId              String?
+  finalCategoryId              String?
+  itemCategoryIds              Json?
+  conditionStatusIds           Json?
+  priceMin                     Int?
+  priceMax                     Int?
+  createdAt                    DateTime        @default(now())
+  userId                       String
+  user                         User            @relation(fields: [userId], references: [id])
+  notifiedItems                NotifiedItem[]
+}
+
+model NotifiedItem {
+  id                           String          @id @default(cuid())
+  itemId                       String 
+  title                        String
+  url                          String
+  price                        Int?
+  createdAt                    DateTime        @default(now())
+  userId                       String
+  conditionId                  String
+  user                         User            @relation(fields: [userId], references: [id])
+  condition                    Condition       @relation(fields: [conditionId], references: [id])
+
+  @@index([itemId, userId, conditionId])
+}
+
+model PushSubscription {
+  id                           String          @id @default(cuid())
+  userId                       String
+  endpoint                     String
+  p256dh                       String
+  auth                         String
+  user                         User            @relation(fields: [userId], references: [id])
+  
+  @@unique([userId, endpoint])
+}
