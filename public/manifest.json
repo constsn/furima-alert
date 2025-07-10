@@ -2,7 +2,7 @@
   "name": "フリマ通知",
   "short_name": "フリマ通知",
   "description": "メルカリの商品通知アプリ",
-  "start_url": "/",
+  "start_url": "/dashboard",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#ef4444",
