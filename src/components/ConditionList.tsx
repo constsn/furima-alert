@@ -9,7 +9,7 @@ import { Clock } from 'lucide-react';
 import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
 
-const ConditionList = () => {
+const ConditionList = ({ userId }: { userId: string }) => {
   const [conditions, setConditions] = useState<Condition[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -53,7 +53,9 @@ const ConditionList = () => {
     setLoading(true);
 
     try {
-      const res = await fetch('/api/conditions');
+      const res = await fetch(`api/conditions/${userId}`, {
+        credentials: 'include',
+      });
       if (!res.ok) {
         throw new Error(`HTTP error! status: ${res.status}`);
       }
