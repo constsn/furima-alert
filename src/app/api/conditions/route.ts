@@ -1,4 +1,5 @@
 import { auth } from '@/auth';
+import { getConditionsByUserId } from '@/lib/db/condition';
 import { prisma } from '@/lib/db/prisma';
 import { NextResponse } from 'next/server';
 
@@ -48,9 +49,7 @@ export async function GET() {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const data = await prisma.condition.findMany({
-    where: { userId: session.user.id },
-  });
+  const data = await getConditionsByUserId(session.user.id);
 
   return NextResponse.json(data);
 }
