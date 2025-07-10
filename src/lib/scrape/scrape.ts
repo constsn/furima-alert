@@ -87,7 +87,7 @@ export const scrape = async (): Promise<void> => {
           });
         });
 
-        await naturalDelay(500, 1500);
+        await naturalDelay(1000, 4000);
         // 1000,3000
 
         await page.goto(url, {
