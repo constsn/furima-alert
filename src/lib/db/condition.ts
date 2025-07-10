@@ -1,3 +1,5 @@
+'use server';
+
 import { prisma } from '@/lib/db/prisma';
 import { revalidatePath } from 'next/cache';
 
@@ -26,4 +28,10 @@ export const deleteCondition = async (conditionId: string) => {
     console.error(`❌ Condition削除時にエラーが発生しました:`, error);
     throw error;
   }
+};
+
+export const getConditionsByUserId = async (userId: string) => {
+  return await prisma.condition.findMany({
+    where: { userId },
+  });
 };

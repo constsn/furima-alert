@@ -90,7 +90,7 @@ export const scrape = async (): Promise<void> => {
         await naturalDelay(1000, 3000);
 
         await page.goto(url, {
-          waitUntil: 'domcontentloaded',
+          waitUntil: 'networkidle2',
           timeout: 90000,
         });
 
