@@ -53,7 +53,7 @@ const ConditionList = ({ userId }: { userId: string }) => {
     setLoading(true);
 
     try {
-      const res = await fetch(`api/conditions/${userId}`, {
+      const res = await fetch(`api/conditions/top/${userId}`, {
         credentials: 'include',
       });
       if (!res.ok) {
