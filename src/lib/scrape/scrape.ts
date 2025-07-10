@@ -87,14 +87,16 @@ export const scrape = async (): Promise<void> => {
           });
         });
 
-        await naturalDelay(1000, 3000);
+        await naturalDelay(500, 1500);
+        // 1000,3000
 
         await page.goto(url, {
-          waitUntil: 'networkidle2',
-          timeout: 90000,
+          waitUntil: 'domcontentloaded',
+          timeout: 60000,
         });
 
-        await naturalDelay(5000, 8000);
+        await naturalDelay(1000, 3000);
+        // 5000, 8000
 
         // スクロール処理
         await page.evaluate(async () => {
@@ -125,7 +127,8 @@ export const scrape = async (): Promise<void> => {
           });
         });
 
-        await naturalDelay(1000, 3000);
+        await naturalDelay(500, 1500);
+        // 1000, 3000
 
         const items: Item[] = await page.evaluate(() => {
           const list: Item[] = [];
