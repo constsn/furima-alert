@@ -36,6 +36,7 @@ export const scrape = async (): Promise<void> => {
           '--disable-dev-shm-usage',
           '--disable-gpu',
           '--no-first-run',
+          '--disable-images',
           '--disable-blink-features=AutomationControlled',
         ],
       },
@@ -47,18 +48,6 @@ export const scrape = async (): Promise<void> => {
       const { url, userId, conditionId } = data;
 
       try {
-        await page.setRequestInterception(true);
-        page.on('request', req => {
-          const resourceType = req.resourceType();
-
-          // 画像のみブロック（サイト動作に影響しにくい）
-          if (resourceType === 'image') {
-            req.abort();
-          } else {
-            req.continue();
-          }
-        });
-
         const randomUA = getRandomUserAgent();
         await page.setUserAgent(randomUA);
 
@@ -101,7 +90,7 @@ export const scrape = async (): Promise<void> => {
         await naturalDelay(1000, 3000);
 
         await page.goto(url, {
-          waitUntil: 'networkidle2',
+          waitUntil: 'domcontentloaded',
           timeout: 90000,
         });
 
