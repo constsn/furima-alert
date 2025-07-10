@@ -48,6 +48,44 @@ export const scrape = async (): Promise<void> => {
       const { url, userId, conditionId } = data;
 
       try {
+        // リソースをブロックする設定（最も効果的）
+        await page.setRequestInterception(true);
+        page.on('request', req => {
+          const resourceType = req.resourceType();
+          const url = req.url();
+
+          // ブロックするリソースタイプ
+          if (
+            resourceType === 'image' ||
+            resourceType === 'media' ||
+            resourceType === 'font' ||
+            resourceType === 'stylesheet' ||
+            resourceType === 'other' ||
+            url.includes('.css') ||
+            url.includes('.jpg') ||
+            url.includes('.jpeg') ||
+            url.includes('.png') ||
+            url.includes('.gif') ||
+            url.includes('.webp') ||
+            url.includes('.svg') ||
+            url.includes('.ico') ||
+            url.includes('.woff') ||
+            url.includes('.woff2') ||
+            url.includes('.ttf') ||
+            url.includes('google-analytics') ||
+            url.includes('googletagmanager') ||
+            url.includes('facebook.net') ||
+            url.includes('doubleclick') ||
+            url.includes('googlesyndication') ||
+            url.includes('amazon-adsystem') ||
+            url.includes('googleadservices')
+          ) {
+            req.abort();
+          } else {
+            req.continue();
+          }
+        });
+
         const randomUA = getRandomUserAgent();
         await page.setUserAgent(randomUA);
 
