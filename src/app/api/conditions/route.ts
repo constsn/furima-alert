@@ -1,6 +1,5 @@
 import { auth } from '@/auth';
 import { prisma } from '@/lib/db/prisma';
-import { Prisma } from '@prisma/client';
 import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
@@ -54,7 +53,7 @@ export async function POST(req: Request) {
       finalCategoryId,
       itemCategoryIds: selectedItems,
       conditionStatusIds: selectedConditions,
-      brandId: brandIdArray as Prisma.JsonArray,
+      brandId: brandIdArray,
       priceMin,
       priceMax,
       userId: session?.user?.id,
