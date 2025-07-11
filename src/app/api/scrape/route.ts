@@ -2,7 +2,6 @@ import { scrape } from '@/lib/scrape/scrape';
 import { NextResponse } from 'next/server';
 
 export const runtime = 'nodejs';
-export const maxDuration = 300; // 5分のタイムアウト
 
 export async function GET() {
   try {
