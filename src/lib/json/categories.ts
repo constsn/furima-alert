@@ -79,11 +79,33 @@ export const CATEGORIES: CategoriesData = {
           },
           '32': {
             name: 'パンツ',
-            items: [],
+            items: [
+              { value: '336', name: 'デニム・ジーンズ' },
+              {
+                value: '337',
+                name: 'ワークパンツ・カーゴパンツ・ペインターパンツ',
+              },
+              { value: '338', name: 'スラックス' },
+              { value: '340', name: 'ショートパンツ・ハーフパンツ' },
+              { value: '339', name: 'チノパン' },
+              { value: '343', name: 'オーバーオール・つなぎ' },
+              { value: '342', name: 'サルエルパンツ' },
+              { value: '1724', name: 'ジョガーパンツ・スウェットパンツ' },
+              { value: '10851', name: 'スキニーパンツ' },
+              { value: '1723', name: 'ワイドパンツ・イージーパンツ' },
+              { value: '344', name: 'その他' },
+            ],
           },
           '33': {
             name: '靴',
-            items: [],
+            items: [
+              { value: '347', name: 'ブーツ・革靴' },
+              { value: '346', name: 'サンダル' },
+              { value: '345', name: 'スニーカー' },
+              { value: '1725', name: 'スリッポン' },
+              { value: '350', name: '長靴・レインシューズ' },
+              { value: '351', name: 'その他' },
+            ],
           },
           '38': {
             name: '小物',
