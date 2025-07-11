@@ -33,7 +33,7 @@ model Condition {
   finalCategoryId              String?
   itemCategoryIds              Json?
   conditionStatusIds           Json?
-  brandId                      Json?
+  brandId                      Int[]
   priceMin                     Int?
   priceMax                     Int?
   createdAt                    DateTime        @default(now())
