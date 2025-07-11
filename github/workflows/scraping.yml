@@ -1,0 +1,97 @@
+name: 🛒 Furima Scraping Automation
+
+on:
+  schedule:
+    - cron: '*/30 15-16 * * *' # JST 0:00〜1:00
+    - cron: '*/30 23-23 * * *' # JST 8:00
+    - cron: '*/30 0-14 * * *' # JST 9:00〜23:00
+
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: '手動実行の理由'
+        required: false
+        default: 'Manual execution'
+
+jobs:
+  scrape:
+    name: 🔍 Execute Scraping
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    steps:
+      - name: 📋 Job Information
+        run: |
+          echo "🚀 Starting Mercari scraping job"
+          echo "⏰ Execution time: $(date)"
+          echo "🎯 Reason: ${{ github.event.inputs.reason || 'Scheduled execution' }}"
+          echo "🔧 GitHub Actor: ${{ github.actor }}"
+
+      - name: 🏥 Health Check Railway App
+        run: |
+          echo "🏥 Checking Railway app health..."
+          response=$(curl -w "%{http_code}" -s -o health.txt \
+            --max-time 30 \
+            https://furima-alert-production.up.railway.app/api/scrape?health=true)
+
+          echo "Health check status: $response"
+          cat health.txt
+
+          if [ $response -ne 200 ]; then
+            echo "⚠️ Health check failed, but continuing..."
+          else
+            echo "✅ Railway app is healthy"
+          fi
+
+      - name: 🛒 Execute Mercari Scraping
+        run: |
+          echo "🔍 Starting scraping process..."
+
+          response=$(curl -w "%{http_code}" -s -o scrape_result.txt \
+            -X POST \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            -H "Content-Type: application/json" \
+            -H "User-Agent: GitHub-Actions-Scraper/1.0" \
+            --max-time 5400 \
+            https://furima-alert-production.up.railway.app/api/scrape)
+
+          echo "📊 HTTP Status Code: $response"
+          echo "📄 Response Body:"
+          cat scrape_result.txt
+
+          if [ $response -eq 200 ]; then
+            echo "✅ Scraping completed successfully!"
+            
+            if command -v jq &> /dev/null; then
+              duration=$(cat scrape_result.txt | jq -r '.duration // "unknown"')
+              timestamp=$(cat scrape_result.txt | jq -r '.timestamp // "unknown"')
+              echo "⏱️ Duration: $duration"
+              echo "🕒 Completed at: $timestamp"
+            fi
+            
+          elif [ $response -eq 401 ]; then
+            echo "🔐 Authentication failed - check CRON_SECRET"
+            exit 1
+            
+          elif [ $response -eq 500 ]; then
+            echo "💥 Internal server error during scraping"
+            exit 1
+            
+          else
+            echo "❌ Unexpected response code: $response"
+            exit 1
+          fi
+
+      - name: 📈 Job Summary
+        if: always()
+        run: |
+          echo "📊 === Job Summary ==="
+          echo "🎯 Workflow: ${{ github.workflow }}"
+          echo "🔄 Run Number: ${{ github.run_number }}"
+          echo "⏰ Started: $(date -d '90 minutes ago')"
+          echo "🏁 Finished: $(date)"
+
+          if [ -f scrape_result.txt ]; then
+            echo "📄 Final Result:"
+            cat scrape_result.txt
+          fi
