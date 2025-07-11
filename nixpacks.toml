@@ -1,8 +1,0 @@
-[phases.setup]
-nixPkgs = ["...", "libnss3", "at-spi2-atk", "libdrm", "libxkbcommon", "gtk3", "alsa-lib"]
-
-[phases.install]
-cmds = ["npm ci --include=dev"]
-
-[start]
-cmd = "npm run start"
