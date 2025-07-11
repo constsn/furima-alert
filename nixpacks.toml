@@ -1,5 +1,5 @@
 [phases.setup]
-nixPkgs = ["...", "libnss3", "libatk-bridge-2.0", "libdrm", "libxkbcommon", "libgtk-3.0"]
+nixPkgs = ["...", "libnss3", "at-spi2-atk", "libdrm", "libxkbcommon", "gtk3", "alsa-lib"]
 
 [phases.install]
 cmds = ["npm ci --include=dev"]
