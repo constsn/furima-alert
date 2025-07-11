@@ -8,6 +8,7 @@ export type Condition = {
   finalCategoryId: string | null;
   itemCategoryIds: string[] | null;
   conditionStatusIds: string[] | null;
+  brandId: number[] | null;
   priceMin: number | null;
   priceMax: number | null;
   createdAt: Date;

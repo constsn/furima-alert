@@ -11,9 +11,30 @@ export async function POST(req: Request) {
     finalCategoryId,
     selectedItems,
     selectedConditions,
+    brandId,
     priceMin,
     priceMax,
   } = await req.json();
+
+  if (brandId.trim() !== '' && typeof brandId !== 'string') {
+    return NextResponse.json(
+      { error: 'brandId が無効です。' },
+      { status: 400 }
+    );
+  }
+
+  const regex = /^[0-9]+(,[0-9]+)*$/;
+  if (!regex.test(brandId)) {
+    return NextResponse.json(
+      { error: 'brandId が無効です。半角数字とカンマのみ指定してください。' },
+      { status: 400 }
+    );
+  }
+
+  const brandIdArray = brandId
+    .split(',')
+    .map((id: string) => parseInt(id, 10))
+    .filter((id: number) => !isNaN(id));
 
   const session = await auth();
 
@@ -32,6 +53,7 @@ export async function POST(req: Request) {
       finalCategoryId,
       itemCategoryIds: selectedItems,
       conditionStatusIds: selectedConditions,
+      brandId: brandIdArray,
       priceMin,
       priceMax,
       userId: session?.user?.id,
