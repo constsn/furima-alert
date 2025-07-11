@@ -1,5 +1,4 @@
 import { auth } from '@/auth';
-import { getConditionsByUserId } from '@/lib/db/condition';
 import { prisma } from '@/lib/db/prisma';
 import { NextResponse } from 'next/server';
 
@@ -40,16 +39,4 @@ export async function POST(req: Request) {
   });
 
   return NextResponse.json({ ok: true });
-}
-
-export async function GET() {
-  const session = await auth();
-
-  if (!session || !session.user?.id) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-
-  const data = await getConditionsByUserId(session.user.id);
-
-  return NextResponse.json(data);
 }
