@@ -3,6 +3,8 @@
 import { CATEGORIES, CategoryItem } from '@/lib/json/categories';
 import { useState } from 'react';
 import { DynamicSelect } from './DynamicSelect';
+import { HelpCircle, Search } from 'lucide-react';
+import Link from 'next/link';
 
 export const ITEM_CONDITIONS = [
   { id: '1', label: '新品、未使用' },
@@ -20,6 +22,8 @@ const ConditionForm = ({ refetch }: { refetch: () => void }) => {
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [selectedConditions, setSelectedConditions] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showHelp, setShowHelp] = useState(false);
+  const [brandIdError, setBrandIdError] = useState<string | null>(null);
 
   // カテゴリ選択肢を生成
   const getCategoryOptions = (): CategoryItem[] => {
@@ -128,6 +132,7 @@ const ConditionForm = ({ refetch }: { refetch: () => void }) => {
           finalCategoryId,
           selectedItems,
           selectedConditions,
+          brandId: formData.get('brandId'),
           priceMin: formData.get('priceMin')
             ? Number(formData.get('priceMin'))
             : null,
@@ -139,9 +144,15 @@ const ConditionForm = ({ refetch }: { refetch: () => void }) => {
       });
 
       if (!res.ok) {
+        const errorData = await res.json();
+        if (errorData.error?.includes('brandId')) {
+          setBrandIdError(errorData.error);
+        }
+
         throw new Error(`条件の保存に失敗しました (${res.status})`);
       }
 
+      setBrandIdError(null);
       alert('条件を保存しました！');
       (e.target as HTMLFormElement).reset();
       setCategoryId('');
@@ -160,7 +171,7 @@ const ConditionForm = ({ refetch }: { refetch: () => void }) => {
     <div className="min-h-screen bg-gray-50 px-4 py-6 sm:px-6 sm:py-8">
       <div className="max-w-md mx-auto">
         <div className="mb-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-2">
+          <h2 className="text-xl font-bold text-gray-900 mb-4">
             条件を保存する
           </h2>
           <p className="text-sm text-gray-600">希望する条件を保存できます</p>
@@ -177,6 +188,107 @@ const ConditionForm = ({ refetch }: { refetch: () => void }) => {
               className="w-full px-3 py-3 border border-gray-300 rounded-lg text-base focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
             />
           </div>
+          <div className="bg-white rounded-lg p-4 shadow-sm border ">
+            <div className="flex items-center gap-2 mb-4">
+              <label className="block text-sm font-medium text-gray-700">
+                ブランド指定
+              </label>
+              <button
+                onClick={() => setShowHelp(!showHelp)}
+                className="p-1 text-blue-600 hover:text-blue-800 transition-colors"
+                title="使い方を見る"
+              >
+                <HelpCircle size={20} />
+              </button>
+              <Link href="/brand-guide">詳しくはこちら</Link>
+            </div>
+
+            <input
+              type="text"
+              name="brandId"
+              placeholder="例: 474 または 474,200"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg text-base focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors mb-4"
+            />
+            {brandIdError && (
+              <p className="text-sm text-red-500 mt-1">{brandIdError}</p>
+            )}
+
+            <div className="bg-blue-50 p-4 rounded-lg mb-4">
+              <p className="text-sm text-blue-800">
+                <strong>💡 簡単に言うと：</strong>
+                メルカリで検索したいブランドの「数字のID」を入力してください。
+                複数のブランドを指定する場合は「474,200」のようにコンマで区切ってください。
+              </p>
+            </div>
+
+            {/* 詳細な説明（トグル式） */}
+            {showHelp && (
+              <div className="bg-gray-50 rounded-lg p-5 space-y-4">
+                <h3 className="font-medium text-gray-800 flex items-center gap-2">
+                  <Search size={18} />
+                  ブランドIDの見つけ方
+                </h3>
+
+                <div className="space-y-3 text-sm text-gray-700">
+                  <div className="bg-white p-3 rounded border-l-4 border-blue-500">
+                    <p className="font-medium text-blue-800 mb-2">📋 手順</p>
+                    <ol className="list-decimal list-inside space-y-1">
+                      <li>メルカリのサイトを開く</li>
+                      <li>検索でブランド名（例：Gucci）を入力</li>
+                      <li>ブランドでフィルターをかける</li>
+                      <li>URLを確認する</li>
+                    </ol>
+                  </div>
+
+                  <div className="bg-white p-3 rounded border-l-4 border-green-500">
+                    <p className="font-medium text-green-800 mb-2">
+                      🔍 URLの見方
+                    </p>
+                    <p className="mb-2">検索後のURLはこのようになります：</p>
+                    <div className="bg-gray-100 p-2 rounded font-mono text-xs break-all">
+                      https://jp.mercari.com/search?brand_id=
+                      <span className="bg-yellow-200 px-1 rounded">474</span>
+                    </div>
+                    <p className="mt-2">
+                      黄色の部分「<strong>474</strong>」がGucciのブランドIDです
+                    </p>
+                  </div>
+
+                  <div className="bg-white p-3 rounded border-l-4 border-purple-500">
+                    <p className="font-medium text-purple-800 mb-2">
+                      📝 入力例
+                    </p>
+                    <div className="space-y-2">
+                      <div>
+                        <span className="text-gray-600">1つのブランド：</span>
+                        <code className="bg-gray-100 px-2 py-1 rounded ml-2">
+                          474
+                        </code>
+                      </div>
+                      <div>
+                        <span className="text-gray-600">複数のブランド：</span>
+                        <code className="bg-gray-100 px-2 py-1 rounded ml-2">
+                          474,200
+                        </code>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-white p-3 rounded border-l-4 border-orange-500">
+                    <p className="font-medium text-orange-800 mb-2">
+                      ⚠️ 注意点
+                    </p>
+                    <ul className="list-disc list-inside space-y-1">
+                      <li>数字のみを入力してください</li>
+                      <li>複数指定する場合は半角コンマ（,）で区切る</li>
+                      <li>スペースは入れないでください</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
           <div className="bg-white rounded-lg p-4 shadow-sm border">
             <div className="space-y-4">
               <div>
@@ -320,7 +432,7 @@ const ConditionForm = ({ refetch }: { refetch: () => void }) => {
               className={`w-full text-white font-medium py-4 rounded-lg transition-all duration-200 ${
                 isSubmitting
                   ? 'bg-gray-400 cursor-not-allowed'
-                  : 'bg-red-500 hover:bg-red-600 active:bg-red-700'
+                  : 'bg-gray-800 hover:bg-gray-500'
               }`}
             >
               {isSubmitting ? (

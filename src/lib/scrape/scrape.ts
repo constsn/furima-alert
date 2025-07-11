@@ -221,6 +221,7 @@ export const scrape = async (): Promise<void> => {
       ...c,
       conditionStatusIds: c.conditionStatusIds as string[] | null,
       itemCategoryIds: c.itemCategoryIds as string[] | null,
+      brandId: c.brandId as number[] | null,
     }));
     const CONDITION_BATCH_SIZE = 5;
     const conditionBatches = chunkArray(conditions, CONDITION_BATCH_SIZE);

@@ -21,6 +21,12 @@ export const buildSearchUrl = (cond: Condition) => {
     const stringRaw = cond.conditionStatusIds.join(',');
     url += `&item_condition_id=${encodeURIComponent(stringRaw)}`;
   }
+
+  if (cond.brandId && cond.brandId.length > 0) {
+    const brandIdString = cond.brandId.join(',');
+    url += `&brand_id=${encodeURIComponent(brandIdString)}`;
+  }
+
   if (cond.priceMin) url += `&price_min=${cond.priceMin}`;
   if (cond.priceMax) url += `&price_max=${cond.priceMax}`;
   url += '&sort=created_time&order=desc';
