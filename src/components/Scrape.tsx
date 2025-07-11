@@ -14,7 +14,7 @@ const Scrape = () => {
         onClick={handleScrape}
         className=" bg-gray-950 text-white px-4 py-2 rounded"
       >
-        スクレイピング開始
+        📝 スクレイピングテスト
       </button>
     </div>
   );
