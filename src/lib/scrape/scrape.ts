@@ -158,15 +158,8 @@ export const scrape = async (): Promise<void> => {
                 const imgDiv = el.querySelector('div[role="img"]');
                 const id = imgDiv ? imgDiv.getAttribute('id') : null;
                 const title = imgDiv ? imgDiv.getAttribute('aria-label') : null;
-
-                // 価格を取得
-                const priceContainer = el.querySelector(
-                  '.merPrice_priceContainerLarge__a6f874q2'
-                );
-                const priceNumber = priceContainer
-                  ? priceContainer.querySelector('.number__6b270ca7')
-                  : null;
-                const price = priceNumber ? priceNumber.textContent : null;
+                const priceEl = el.querySelector('span.number__6b270ca7');
+                const price = priceEl ? priceEl.textContent?.trim() : null;
 
                 if (!href || !id || !title || !price) return;
                 list.push({
