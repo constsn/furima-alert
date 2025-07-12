@@ -12,7 +12,9 @@ export const handleNewItems = async (
 
   try {
     // 有効なアイテムのみをフィルタリング
-    const validItems = items.filter(item => item.id && item.title && item.url);
+    const validItems = items.filter(
+      item => item.id && item.title && item.url && item.price
+    );
 
     if (validItems.length === 0) {
       console.log('有効なアイテムがありません');
@@ -36,6 +38,7 @@ export const handleNewItems = async (
           itemId: item.id!,
           title: item.title!,
           url: item.url!,
+          price: Number(item.price)!,
           userId,
           conditionId,
         })),
@@ -74,6 +77,7 @@ export const handleNewItems = async (
           itemId: item.id as string,
           title: item.title as string,
           url: item.url as string,
+          price: Number(item.price),
           userId,
           conditionId,
         })),

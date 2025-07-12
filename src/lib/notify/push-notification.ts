@@ -6,6 +6,7 @@ export interface NotificationPayload {
   icon?: string;
   badge?: string;
   url?: string;
+  price?: string;
 }
 
 export async function sendNotificationToUser(
