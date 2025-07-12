@@ -1,7 +1,7 @@
 import { auth } from '@/auth';
-import ConditionList from '@/components/ConditionList';
-import Header from '@/components/Header';
-import NotificationSettings from '@/components/NotificationSettings';
+import ConditionList from '@/components/conditions/ConditionList';
+import Header from '@/components/layout/Header';
+import NotificationSettings from '@/components/push/NotificationSettings';
 
 export default async function Page() {
   const session = await auth();

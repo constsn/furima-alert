@@ -3,11 +3,11 @@ import type { Item } from '@/types/item';
 import { buildSearchUrl } from './searchUrl';
 import { handleNewItems } from '../notify/handle-newItems';
 import { checkMemoryUsage } from '../utils/check-memory';
-import { getRandomUserAgent } from './userAgent';
-import { getRandomViewport } from './viewport';
+import { getRandomUserAgent } from '../utils/userAgent';
+import { getRandomViewport } from '../utils/viewport';
 import { chunkArray } from '../utils/chunkArray';
 import { Cluster } from 'puppeteer-cluster';
-import { naturalDelay } from './delay';
+import { naturalDelay } from '../utils/delay';
 import { Condition } from '@/types/cond';
 
 interface ProcessingStats {

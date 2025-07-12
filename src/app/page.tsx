@@ -1,4 +1,4 @@
-import Header from '@/components/Header';
+import Header from '@/components/layout/Header';
 import { Search, Smartphone, Settings } from 'lucide-react';
 import Link from 'next/link';
 
