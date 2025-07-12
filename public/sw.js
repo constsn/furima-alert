@@ -2,8 +2,7 @@ self.addEventListener('push', function (event) {
   if (event.data) {
     const data = event.data.json();
 
-    const match = data.title.match(/(\d{1,3}(?:,\d{3})*)\s*円/);
-    const price = match ? match[1] : '価格情報なし';
+    const price = `💰 ${data.price}円`;
 
     const options = {
       body: price,

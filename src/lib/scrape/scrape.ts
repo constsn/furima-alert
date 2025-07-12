@@ -159,8 +159,18 @@ export const scrape = async (): Promise<void> => {
                 const id = imgDiv ? imgDiv.getAttribute('id') : null;
                 const title = imgDiv ? imgDiv.getAttribute('aria-label') : null;
 
-                if (!href || !id || !title) return;
-                list.push({ id, title, url: `https://jp.mercari.com${href}` });
+                const priceElement = el.querySelector('span[class*="number"]');
+                const price = priceElement
+                  ? priceElement.textContent?.trim()
+                  : null;
+
+                if (!href || !id || !title || !price) return;
+                list.push({
+                  id,
+                  title,
+                  price,
+                  url: `https://jp.mercari.com${href}`,
+                });
               });
 
             return list;

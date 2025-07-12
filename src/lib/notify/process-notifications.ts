@@ -13,6 +13,7 @@ export const processNotifications = async (userId: string, items: Item[]) => {
         sendNotificationToUser(userId, {
           title: item.title as string,
           url: item.url as string,
+          price: item.price as string,
         })
       ).catch(error => {
         console.error(
