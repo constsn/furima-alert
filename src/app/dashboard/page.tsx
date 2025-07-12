@@ -10,8 +10,6 @@ export default async function Page() {
     return <p>認証エラー</p>;
   }
 
-  console.log(session);
-
   return (
     <div>
       <Header />

@@ -30,7 +30,7 @@ export const buildSearchUrl = (cond: Condition) => {
   if (cond.priceMin) url += `&price_min=${cond.priceMin}`;
   if (cond.priceMax) url += `&price_max=${cond.priceMax}`;
   url += '&sort=created_time&order=desc';
-  console.log('🔥🔥🔥URL🔥🔥🔥', url);
+  console.log('📝URL作成完了しました', url);
 
   return url;
 };

@@ -18,7 +18,6 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
   providers: [
     Credentials({
       async authorize(credentials) {
-        console.log(credentials, 'クリデンシャル🔥');
         const parsedCredentials = z
           .object({ email: z.string().email(), password: z.string().min(8) })
           .safeParse(credentials);
@@ -33,7 +32,7 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
             password,
             user.password
           );
-          console.log(user, '🔥🔥');
+
           if (passwordsMatch) return user;
           // authにuserオブジェクトが入る
         }
