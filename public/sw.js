@@ -2,8 +2,11 @@ self.addEventListener('push', function (event) {
   if (event.data) {
     const data = event.data.json();
 
+    const match = data.title.match(/(\d+円)$/);
+    const price = match ? match[1] : '価格情報なし';
+
     const options = {
-      body: '新しい商品が追加されました！',
+      body: price,
       icon: '/icon-192x192.png', // アプリのアイコン
       badge: '/badge-72x72.png', // 通知バッジ
       data: {
