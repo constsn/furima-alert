@@ -2,7 +2,7 @@ self.addEventListener('push', function (event) {
   if (event.data) {
     const data = event.data.json();
 
-    const price = `💰 ${data.price}円`;
+    const price = `💰 ${data.price}`;
 
     const options = {
       body: price,

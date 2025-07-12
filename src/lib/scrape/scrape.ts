@@ -158,10 +158,13 @@ export const scrape = async (): Promise<void> => {
                 const imgDiv = el.querySelector('div[role="img"]');
                 const id = imgDiv ? imgDiv.getAttribute('id') : null;
                 const title = imgDiv ? imgDiv.getAttribute('aria-label') : null;
-                const priceEl = el.querySelector('span.number__6b270ca7');
-                const price = priceEl ? priceEl.textContent?.trim() : null;
 
-                if (!href || !id || !title || !price) return;
+                if (!href || !id || !title) return;
+
+                const match = title.match(/[\d,]+円/);
+
+                const price = match ? match[0] : '???';
+
                 list.push({
                   id,
                   title,
