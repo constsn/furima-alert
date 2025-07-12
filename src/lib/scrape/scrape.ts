@@ -176,6 +176,9 @@ export const scrape = async (): Promise<void> => {
             throw new Error('DOM structure may have changed — no items found');
           }
 
+          console.log(items[0].title, '✅dom操作後の商品タイトル');
+          console.log(typeof items[0].title);
+
           console.log(
             `📦 抽出したアイテム数: ${items.length} 🔗メルカリ条件ページ: ${url} conditionId: ${conditionId}  `
           );
