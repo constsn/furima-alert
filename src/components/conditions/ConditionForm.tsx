@@ -2,7 +2,7 @@
 
 import { CATEGORIES, CategoryItem } from '@/lib/json/categories';
 import { useState } from 'react';
-import { DynamicSelect } from './DynamicSelect';
+import { DynamicSelect } from '../ui/DynamicSelect';
 import { HelpCircle, Search } from 'lucide-react';
 import Link from 'next/link';
 
