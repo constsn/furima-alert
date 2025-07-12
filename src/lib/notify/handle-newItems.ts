@@ -62,6 +62,10 @@ export const handleNewItems = async (
       );
     }
 
+    console.log(newItems[0].title, '✅商品タイトル');
+    console.log(newItems[1].title, '✅商品タイトル');
+    console.log(newItems[2].title, '✅商品タイトル');
+
     // 2. トランザクションを使用してDB操作を最適化
     await prisma.$transaction(async tx => {
       // バッチでアイテムを作成
