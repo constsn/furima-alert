@@ -159,10 +159,14 @@ export const scrape = async (): Promise<void> => {
                 const id = imgDiv ? imgDiv.getAttribute('id') : null;
                 const title = imgDiv ? imgDiv.getAttribute('aria-label') : null;
 
-                const priceElement = el.querySelector('span[class*="number"]');
-                const price = priceElement
-                  ? priceElement.textContent?.trim()
+                // 価格を取得
+                const priceContainer = el.querySelector(
+                  '.merPrice_priceContainerLarge__a6f874q2'
+                );
+                const priceNumber = priceContainer
+                  ? priceContainer.querySelector('.number__6b270ca7')
                   : null;
+                const price = priceNumber ? priceNumber.textContent : null;
 
                 if (!href || !id || !title || !price) return;
                 list.push({
