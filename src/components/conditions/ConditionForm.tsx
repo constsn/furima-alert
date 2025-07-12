@@ -195,6 +195,7 @@ const ConditionForm = ({ refetch }: { refetch: () => void }) => {
               </label>
               <button
                 onClick={() => setShowHelp(!showHelp)}
+                type="button"
                 className="p-1 text-blue-600 hover:text-blue-800 transition-colors"
                 title="使い方を見る"
               >

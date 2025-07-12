@@ -60,7 +60,7 @@ const ConditionList = ({ userId }: { userId: string }) => {
         throw new Error(`HTTP error! status: ${res.status}`);
       }
       const data = await res.json();
-      console.log(data);
+
       setConditions(data);
     } catch (err) {
       console.error('条件の取得に失敗しました:', err);
